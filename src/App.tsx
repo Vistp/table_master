@@ -1,7 +1,9 @@
-import React from "react";
-import Table from "./components/Table/Table";
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setData } from './store/tableSlice';
+import Table from './components/Table/Table';
 
-interface DataRow extends Record<string, unknown> {
+interface DataRow {
   id: number;
   name: string;
   num: number;
@@ -13,26 +15,27 @@ interface Column<T> {
 }
 
 const App: React.FC = () => {
-  const data: DataRow[] = Array.from({ length: 15 }, (_, index) => ({
-    id: index + 1,
-    name: `Объект ${index + 1}`,
-    num: Math.floor(Math.random() * 100),
-  }));
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const data: DataRow[] = Array.from({ length: 15 }, (_, index) => ({
+      id: index + 1,
+      name: `Объект ${index + 1}`,
+      num: Math.floor(Math.random() * 100),
+    }));
+    dispatch(setData(data));
+  }, [dispatch]);
 
   const columns: Column<DataRow>[] = [
-    { header: "ID", accessor: "id" },
-    { header: "Объект", accessor: "name" },
-    { header: "Значение", accessor: "num" },
+    { header: 'ID', accessor: 'id' },
+    { header: 'Объект', accessor: 'name' },
+    { header: 'Значение', accessor: 'num' },
   ];
-
-  const handleRowClick = (row: DataRow) => {
-    console.log("Кликнули на строку:", row.id);
-  };
 
   return (
     <div>
       <h2>Таблица</h2>
-      <Table columns={columns} data={data} onRowClick={handleRowClick} />
+      <Table columns={columns} />
     </div>
   );
 };
