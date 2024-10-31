@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setData } from './store/tableSlice';
-import Table from './components/Table/Table';
+import Table from './components/Table';
 
 interface DataRow {
   id: number;

@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setFilter, requestSort, selectRow } from '../../store/tableSlice';
+import { requestSort, toggleRowSelection } from '../../store/tableSlice';
+import FilterInput from '../FilterInput/FilterInput';
+import s from './Table.module.css';
 
 interface DataRow {
     id: number;
@@ -19,6 +21,7 @@ interface Column<T> {
   const filter = useSelector((state: { table: { filter: string } }) => state.table.filter);
   const sortConfig = useSelector((state: { table: { sortConfig: { key: keyof T | null; direction: 'ascending' | 'descending' | null } } }) => state.table.sortConfig);
   const data = useSelector((state: { table: { data: T[] } }) => state.table.data);
+  const selectedRowIds = useSelector((state: { table: { selectedRowIds: number[] } }) => state.table.selectedRowIds);
   const filteredData = data.filter((row) =>
     Object.values(row).some((value) =>
       String(value).toLowerCase().includes(filter.toLowerCase())
@@ -44,16 +47,12 @@ interface Column<T> {
   }, [filteredData, sortConfig]);
 
   return (
-    <div>
-      <input
-        type='text'
-        placeholder='Фильтрация...'
-        value={filter}
-        onChange={(e) => dispatch(setFilter(e.target.value))}
-      />
-      <table className='table'>
+    <div>     
+      <FilterInput />
+      <table className={s.table}>
         <thead>
           <tr>
+            <th></th>
             {columns.map((column) => (
               <th
                 key={column.header}
@@ -66,10 +65,17 @@ interface Column<T> {
         </thead>
         <tbody>
           {sortedData.map((row) => (
-            <tr 
-                key={row.id}
-                onClick={() => dispatch(selectRow(row.id))}
+            <tr
+              key={row.id}
+              onClick={() => dispatch(toggleRowSelection(row.id))}
             >
+              <td>
+                <input
+                  type='checkbox'
+                  checked={selectedRowIds.includes(row.id)}
+                  onChange={() => dispatch(toggleRowSelection(row.id))}
+                />
+              </td>
               {columns.map((column) => (
                 <td key={String(column.accessor)}>{String(row[column.accessor])}</td>
               ))}
@@ -77,6 +83,10 @@ interface Column<T> {
           ))}
         </tbody>
       </table>
+      <div className={s.statistics}>
+        <span className={s.objectCount}>Объектов: {data.length}</span>
+        <span>Показано объектов: {filteredData.length}</span>
+      </div>
     </div>
   );
 };

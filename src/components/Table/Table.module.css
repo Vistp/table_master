@@ -1,0 +1,27 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table th {
+  cursor: pointer;
+}
+
+.table tr:hover {
+  background-color: #4b4a4a;
+}
+
+.statistics {
+  padding: 8px;
+}
+
+.objectCount {
+  margin-right: 10px;
+}

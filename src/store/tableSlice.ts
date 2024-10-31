@@ -13,14 +13,14 @@ interface TableState {
     key: keyof DataRow | null;
     direction: 'ascending' | 'descending' | null;
   };
-  selectedRowId: number | null;
+  selectedRowIds: number[];
 }
 
 const initialState: TableState = {
   data: [],
   filter: '',
   sortConfig: { key: null, direction: null },
-  selectedRowId: null,
+  selectedRowIds: [],
 };
 
 const tableSlice = createSlice({
@@ -39,12 +39,16 @@ const tableSlice = createSlice({
         state.sortConfig.direction === 'ascending' ? 'descending' : 'ascending';
       state.sortConfig.key = key;
     },
-    selectRow(state, action: PayloadAction<number>) {
-        state.selectedRowId = action.payload;
-        console.log(`Нажата строка: ${action.payload}`);
+    toggleRowSelection(state, action: PayloadAction<number>) {
+      const rowId = action.payload;
+      if (state.selectedRowIds.includes(rowId)) {
+        state.selectedRowIds = state.selectedRowIds.filter(id => id !== rowId);
+      } else {
+        state.selectedRowIds.push(rowId);
+      }
     },
   },
 });
 
-export const { setData, setFilter, requestSort, selectRow } = tableSlice.actions;
+export const { setData, setFilter, requestSort, toggleRowSelection } = tableSlice.actions;
 export default tableSlice.reducer;
