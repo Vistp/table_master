@@ -1,0 +1,12 @@
+.container {
+width: 700px;
+margin: 0 auto;
+}
+
+.statistics {
+  padding: 8px;
+}
+
+.objectCount {
+  margin-right: 10px;
+}

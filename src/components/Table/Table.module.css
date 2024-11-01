@@ -17,11 +17,3 @@
 .table tr:hover {
   background-color: #4b4a4a;
 }
-
-.statistics {
-  padding: 8px;
-}
-
-.objectCount {
-  margin-right: 10px;
-}

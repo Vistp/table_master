@@ -1,18 +1,8 @@
 import React, { useEffect } from 'react';
+import { DataRow, Column } from './types/types';
 import { useDispatch } from 'react-redux';
 import { setData } from './store/tableSlice';
-import Table from './components/Table';
-
-interface DataRow {
-  id: number;
-  name: string;
-  num: number;
-}
-
-interface Column<T> {
-  header: string;
-  accessor: keyof T;
-}
+import Table from './components/TableData';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -34,7 +24,6 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <h2>Таблица</h2>
       <Table columns={columns} />
     </div>
   );
